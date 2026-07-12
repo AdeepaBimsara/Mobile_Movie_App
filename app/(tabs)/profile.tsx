@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { getCurrentUser, logoutUser } from "@/services/authService";
 import { router } from "expo-router";
+import { account } from "@/services/appwrite";
 
 const Profile = () => {
   const [user, setUser] = useState<any>(null);
@@ -43,11 +44,21 @@ const Profile = () => {
         text: "Yes",
         onPress: async () => {
           try {
-            await logoutUser();
+             const user = await account.get();
+
+             if(user){
+
+      await logoutUser();
+
+      router.replace("/login");
+
+    }
+
             router.replace("/welcome");
           } catch (error) {
             console.log(error);
             Alert.alert("Error", "Logout failed");
+            router.replace("/login");
           }
         },
       },

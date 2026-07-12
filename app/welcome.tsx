@@ -1,4 +1,11 @@
-import { View, Text, ImageBackground, TouchableOpacity, ActivityIndicator,Image } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  ActivityIndicator,
+  Image,
+} from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
@@ -7,14 +14,16 @@ import { Animated, Easing } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { account } from "@/services/appwrite";
 import { icons } from "@/constants/icons";
+import { getCurrentUser } from "@/services/authService";
 
 export default function Home() {
+  console.log("APP INDEX RUNNING");
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
 
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
 
-  const [loading,setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Animated.parallel([
@@ -39,45 +48,36 @@ export default function Home() {
       }),
     ]).start();
 
-    checkAuth()
+    // checkAuth();
+
   }, []);
 
-   const checkAuth = async () => {
-    try {
-      await account.get();
+  // const checkAuth = async () => {
+  //   try {
+  //     await account.get();
 
-      // User already logged in
-      router.replace("/(tabs)");
+  //     // User already logged in
+  //     router.replace("/(tabs)");
+  //   } catch {
+  //     // User not logged in
+  //     router.replace("/(auth)/login");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-    } catch {
-      // User not logged in
-      router.replace("/login");
-    }finally{
-      setLoading(false)
-    }
-  };
+  // if (loading) {
+  //   return (
+  //     <View className="flex-1 bg-slate-950 items-center justify-center">
+  //       <Image source={icons.logo} className="w-24 h-24" resizeMode="contain" />
 
-  if (loading) {
-  return (
-    <View className="flex-1 bg-slate-950 items-center justify-center">
-      <Image
-        source={icons.logo}
-        className="w-24 h-24"
-        resizeMode="contain"
-      />
-
-      <ActivityIndicator
-        size="large"
-        color="#9333EA"
-        className="mt-6"
-      />
-    </View>
-  );
-}
+  //       <ActivityIndicator size="large" color="#9333EA" className="mt-6" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <View className="flex-1">
-
       <ImageBackground
         source={require("../assets/images/home.png")}
         resizeMode="cover"

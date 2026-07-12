@@ -9,9 +9,11 @@ import { fetchMovies } from "@/services/api";
 import MovieCard from "@/components/MovieCard";
 import { getTrendingMovies } from "@/services/appwrite";
 import TrendingCard from "@/components/TrendingCard";
-
+import { useEffect } from "react"
 
 export default function Index() {
+
+  console.log("HOME TAB OPENED");
 
   const router = useRouter();
 
