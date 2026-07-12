@@ -116,7 +116,7 @@ export default function Home() {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.push("/(tabs)")}
+              onPress={() => router.push("/(auth)/register")}
 
               style={{
                 width: "100%",
