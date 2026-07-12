@@ -1,5 +1,5 @@
 // track serches made by user
-import {Client, Databases, Query,ID} from "react-native-appwrite"
+import {Client, Databases, Query,ID,Account} from "react-native-appwrite"
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!
 const TABLE_ID = process.env.EXPO_PUBLIC_APPWRITE_TABLE_ID
@@ -9,6 +9,7 @@ const client = new Client()
         .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
 
 const database = new Databases(client);
+export const account = new Account(client);
 
 export const updateSearchCount = async(query: string, movie: Movie) => {
     
@@ -66,3 +67,4 @@ export const getTrendingMovies = async (): Promise<TrendingMovie[] | undefined> 
     }
 
 }
+

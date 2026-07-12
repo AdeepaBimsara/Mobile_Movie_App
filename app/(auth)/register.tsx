@@ -15,10 +15,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { icons } from "@/constants/icons";
+import { registerUser } from "@/services/authService";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const [email,setEmail] = useState("");
+const [password,setPassword] = useState("");
+const [name,setName] = useState("");
 
   return (
     <SafeAreaView className="flex-1 bg-slate-950" edges={["top"]}>
@@ -61,6 +66,8 @@ export default function Register() {
               placeholder="Full Name"
               placeholderTextColor="#94A3B8"
               className="flex-1 text-white ml-3"
+              value={name}
+              onChangeText={setName}
             />
           </View>
 
@@ -70,6 +77,8 @@ export default function Register() {
 
             <TextInput
               placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
               placeholderTextColor="#94A3B8"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -83,6 +92,8 @@ export default function Register() {
 
             <TextInput
               placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
               placeholderTextColor="#94A3B8"
               secureTextEntry={!showPassword}
               className="flex-1 text-white ml-3"
@@ -128,6 +139,16 @@ export default function Register() {
             style={{
               borderRadius: 50,
               overflow: "hidden",
+            }}
+            onPress={async () => {
+              try {
+                await registerUser(name, email, password);
+                console.log("save register");
+                
+                router.push("/login");
+              } catch (error) {
+                console.log(error);
+              }
             }}
           >
             <LinearGradient
