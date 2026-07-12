@@ -1,9 +1,10 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { getCurrentUser } from "@/services/authService";
+import { getCurrentUser, logoutUser } from "@/services/authService";
+import { router } from "expo-router";
 
 const Profile = () => {
   const [user, setUser] = useState<any>(null);
@@ -13,7 +14,11 @@ const Profile = () => {
   }, []);
 
   const loadUser = async () => {
+    console.log("loadUser called");
+
     const currentUser = await getCurrentUser();
+
+    console.log("PROFILE USER:", currentUser);
 
     setUser(currentUser);
   };
@@ -26,6 +31,27 @@ const Profile = () => {
     }
 
     return words[0][0].toUpperCase();
+  };
+
+  const handleLogout = () => {
+    Alert.alert("Logout", "Are you sure you want to logout?", [
+      {
+        text: "No",
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: async () => {
+          try {
+            await logoutUser();
+            router.replace("/welcome");
+          } catch (error) {
+            console.log(error);
+            Alert.alert("Error", "Logout failed");
+          }
+        },
+      },
+    ]);
   };
 
   return (
@@ -58,6 +84,7 @@ const Profile = () => {
             justifyContent: "center",
             alignItems: "center",
           }}
+          onPress={handleLogout}
         >
           <Ionicons name="log-out-outline" size={24} color="white" />
         </TouchableOpacity>

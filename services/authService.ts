@@ -1,5 +1,6 @@
 import { ID } from "react-native-appwrite";
 import { account } from "./appwrite";
+import { router } from "expo-router";
 
 
 export const registerUser = async(
@@ -41,6 +42,14 @@ export const loginUser = async(
 
     try{
 
+    //     try{
+    //   const currentUser = await account.get();
+    //   return currentUser;
+    //     }catch(err){
+    //         console.log("current user: ",err);
+            
+    //     }
+
         const session =
         await account.createEmailPasswordSession(
             email,
@@ -63,6 +72,7 @@ export const loginUser = async(
 export const getCurrentUser = async()=>{
 
     try{
+        console.log("getCurrentUser called");
 
         const user = await account.get();
 
@@ -79,3 +89,13 @@ export const getCurrentUser = async()=>{
     }
 
 }
+
+export const logoutUser = async () => {
+  try {
+    await account.deleteSession("current");
+    console.log("Logged out successfully");
+  } catch (error) {
+    console.log("LOGOUT ERROR:", error);
+    throw error;
+  }
+};

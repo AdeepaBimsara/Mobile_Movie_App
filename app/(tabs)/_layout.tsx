@@ -4,10 +4,35 @@ import { Tabs } from 'expo-router'
 import { images } from '@/constants/images'
 import { icons } from '@/constants/icons'
 
+import Animated, { 
+  useAnimatedStyle, 
+  withSpring 
+} from "react-native-reanimated";
+
 const TabIcon = ({focused,icon,title}: any) => {
+
+     const animatedStyle = useAnimatedStyle(()=>{
+
+        return {
+            transform:[
+                {
+                    scale: withSpring(
+  focused ? 1 : 0.85,
+  {
+    damping: 12,
+    stiffness: 120
+  }
+)
+                }
+            ],
+            opacity: withSpring(focused ? 1 : 0.6)
+        }
+        });
+    
 
     if(focused){
         return (
+            <Animated.View style={animatedStyle}>
                     <ImageBackground
                                 source={images.highlight}
                                 className="flex flex-row w-full flex-1 min-w-[112px] min-h-16 mt-4 justify-center items-center rounded-full overflow-hidden"
@@ -15,14 +40,19 @@ const TabIcon = ({focused,icon,title}: any) => {
                             <Image source={icon} tintColor="#151312" className="size-5"/>
                             <Text className="text-secondary text-base font-semibold ml-2">{title}</Text>
                             </ImageBackground>
+                            </Animated.View>
             )
     }
 
         return(
-            <View className='size-full justify-center items-center mt-4 rounded-full'>
+            <Animated.View style={animatedStyle} className='size-full justify-center items-center mt-4 rounded-full'>
+            {/* <View className='size-full justify-center items-center mt-4 rounded-full'> */}
                 <Image source={icon } tintColor="#A8B5DB" className='size-5'/>
-             </View>
+             {/* </View> */}
+            </Animated.View>
         )
+
+   
 }
 
 const _layout = () => {

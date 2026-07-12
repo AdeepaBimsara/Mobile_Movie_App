@@ -9,6 +9,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -21,9 +22,24 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const [email,setEmail] = useState("");
-const [password,setPassword] = useState("");
-const [name,setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    try {
+      await registerUser(name, email, password);
+      console.log("save register");
+
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-slate-950" edges={["top"]}>
@@ -140,16 +156,7 @@ const [name,setName] = useState("");
               borderRadius: 50,
               overflow: "hidden",
             }}
-            onPress={async () => {
-              try {
-                await registerUser(name, email, password);
-                console.log("save register");
-                
-                router.push("/login");
-              } catch (error) {
-                console.log(error);
-              }
-            }}
+            onPress={handleRegister}
           >
             <LinearGradient
               colors={["#9333EA", "#2563EB"]}
@@ -161,9 +168,17 @@ const [name,setName] = useState("");
                 justifyContent: "center",
               }}
             >
-              <Text className="text-white text-lg font-bold">
+              {/* <Text className="text-white text-lg font-bold">
                 Create Account
-              </Text>
+              </Text> */}
+
+              {loading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text className="text-white text-lg font-bold">
+                  Create Account
+                </Text>
+              )}
             </LinearGradient>
           </TouchableOpacity>
 

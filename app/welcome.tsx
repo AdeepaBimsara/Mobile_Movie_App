@@ -1,16 +1,20 @@
-import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity, ActivityIndicator,Image } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { Animated, Easing } from "react-native";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { account } from "@/services/appwrite";
+import { icons } from "@/constants/icons";
 
 export default function Home() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
 
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
+
+  const [loading,setLoading] = useState(true)
 
   useEffect(() => {
     Animated.parallel([
@@ -34,10 +38,46 @@ export default function Home() {
         useNativeDriver: true,
       }),
     ]).start();
+
+    checkAuth()
   }, []);
+
+   const checkAuth = async () => {
+    try {
+      await account.get();
+
+      // User already logged in
+      router.replace("/(tabs)");
+
+    } catch {
+      // User not logged in
+      router.replace("/login");
+    }finally{
+      setLoading(false)
+    }
+  };
+
+  if (loading) {
+  return (
+    <View className="flex-1 bg-slate-950 items-center justify-center">
+      <Image
+        source={icons.logo}
+        className="w-24 h-24"
+        resizeMode="contain"
+      />
+
+      <ActivityIndicator
+        size="large"
+        color="#9333EA"
+        className="mt-6"
+      />
+    </View>
+  );
+}
 
   return (
     <View className="flex-1">
+
       <ImageBackground
         source={require("../assets/images/home.png")}
         resizeMode="cover"
@@ -116,7 +156,7 @@ export default function Home() {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.push("/(auth)/register")}
+              onPress={() => router.push("/login")}
 
               style={{
                 width: "100%",

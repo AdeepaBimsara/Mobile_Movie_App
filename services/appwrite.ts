@@ -8,7 +8,7 @@ const client = new Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
         .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
 
-const database = new Databases(client);
+export const database = new Databases(client);
 export const account = new Account(client);
 
 export const updateSearchCount = async(query: string, movie: Movie) => {
