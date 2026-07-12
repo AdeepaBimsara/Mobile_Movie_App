@@ -59,3 +59,23 @@ export const loginUser = async(
     }
 
 }
+
+export const getCurrentUser = async()=>{
+
+    try{
+
+        const user = await account.get();
+
+        console.log("CURRENT USER :", user);
+
+        return user;
+
+
+    }catch(error){
+
+        console.log(error);
+         console.log("GET USER ERROR :", error);
+
+    }
+
+}

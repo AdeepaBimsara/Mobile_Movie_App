@@ -16,9 +16,37 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { icons } from "@/constants/icons";
+import { loginUser } from "@/services/authService";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [email,setEmail] = useState("");
+const [password,setPassword] = useState("");
+
+  const handleLogin = async()=>{
+
+  try{
+
+    const session = await loginUser(
+      email,
+      password
+    );
+
+
+    console.log("SESSION CREATED:", session);
+
+
+    router.replace("/(tabs)");
+
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+
+}
 
   return (
     <SafeAreaView className="flex-1 bg-slate-950" edges={["top"]}>
@@ -69,6 +97,10 @@ export default function Login() {
             <TextInput
               placeholder="Email"
 
+              value={email}
+
+              onChangeText={setEmail}
+
               placeholderTextColor="#94A3B8"
 
               keyboardType="email-address"
@@ -86,6 +118,10 @@ export default function Login() {
 
             <TextInput
               placeholder="Password"
+
+              value={password}
+
+              onChangeText={setPassword}
 
               placeholderTextColor="#94A3B8"
 
@@ -121,7 +157,7 @@ export default function Login() {
               overflow: "hidden",
             }}
 
-            onPress={() => router.replace("/(tabs)")}
+            onPress={handleLogin}
           >
             <LinearGradient
               colors={["#9333EA", "#2563EB"]}
