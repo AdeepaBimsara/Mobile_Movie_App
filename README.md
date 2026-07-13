@@ -2,7 +2,7 @@
 <h1 align="center">🎬 Movie Hub</h1>
 
 <p align="center">
-A modern and responsive Movie Discovery Mobile Application built with
+A modern Movie Discovery Mobile Application built with
 <strong>React Native</strong>, <strong>Expo</strong>, <strong>TypeScript</strong>, and
 <strong>Appwrite</strong>.
 </p>
